@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>방 목록</title>
+</head>
+<body>
+<h2>방 만들기</h2>
+<input type="text" id="roomName" placeholder="방 이름"/>
+<button onclick="createRoom()">만들기</button>
+
+<h2>방 목록</h2>
+<ul id="roomList"></ul>
+
+<a href="/">← 전체 채팅으로</a>
+
+<script>
+    async function createRoom() {
+        let name = document.getElementById("roomName").value;
+        if (!name) {
+            alert("방 이름을 입력하세요!");
+            return;
+        }
+        await fetch("/rooms?name=" + name, { method: "POST" });
+        document.getElementById("roomName").value = '';
+        loadRooms();
+    }
+
+    async function loadRooms() {
+        let res = await fetch("/rooms");
+        let rooms = await res.json();
+
+        let list = document.getElementById("roomList");
+        list.innerHTML = '';
+
+        rooms.forEach(r => {
+            let li = document.createElement("li");
+            let a = document.createElement("a");
+            a.href = "/chat/" + r.roomId;
+            a.innerText = r.name;
+            li.appendChild(a);
+            list.appendChild(li);
+        });
+    }
+
+    loadRooms();
+</script>
+</body>
+</html>

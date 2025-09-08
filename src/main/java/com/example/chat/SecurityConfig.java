@@ -21,7 +21,7 @@ public class SecurityConfig {
 
         http.formLogin(form -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/chat",true)// 우리가 만든 페이지 사용
+                .defaultSuccessUrl("/",true)// 우리가 만든 페이지 사용
                 .permitAll()
         );
         return http.build();
